@@ -48,7 +48,7 @@ class Game:
 
     def show_end_screen(self, player_one_score, player_two_score):
         """Displays the end screen with the winner and the final scores."""
-        winner = "Player One" if player_one_score > player_two_score else "Player Two"
+        winner = "Player 1" if player_one_score > player_two_score else "Player 2"
         if player_one_score == player_two_score:
             winner = "It's a Tie!"
 
