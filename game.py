@@ -1,4 +1,3 @@
-# game.py
 import pygame
 
 from look import Look
@@ -11,6 +10,7 @@ class Game:
         self.look = Look()
         self.reaction = Reaction(self.look)  # Pass the Look instance to Reaction
         self.running = True
+        self.font = pygame.font.SysFont(None, 72)  # Font for the end screen
 
     def run(self):
         """Main game loop that keeps the game running."""
@@ -22,13 +22,56 @@ class Game:
                 # Let Reaction handle player input
                 self.reaction.handle_event(event)
 
-            # Get the updated scores
+            # Get the updated scores and lives
             player_one_score, player_two_score = self.reaction.get_scores()
             player_one_lifes, player_two_lifes = self.reaction.get_lifes()
+
+            # Check if the game should end
             if player_one_lifes == 0 or player_two_lifes == 0:
-                self.running = False
+                self.running = False  # Stop the game loop
 
             # Let Look handle the rendering of the game state
             self.look.draw(player_one_score, player_two_score)
 
+        # Show the end screen after the game loop ends
+        self.show_end_screen(player_one_score, player_two_score)
+
         pygame.quit()
+
+    def show_end_screen(self, player_one_score, player_two_score):
+        """Displays the end screen with the winner and the final scores."""
+        winner = "Player One" if player_one_score > player_two_score else "Player Two"
+        if player_one_score == player_two_score:
+            winner = "It's a Tie!"
+
+        # Fill the screen with white
+        self.look.screen.fill((255, 255, 255))
+
+        # Display the winner and the final scores
+        if winner != "It's a Tie!":
+            end_message = f"{winner} Wins!"
+        else:
+            end_message = "It's a Tie!"
+            
+        score_message = f"{player_one_score} : {player_two_score}"
+
+        end_text = self.font.render(end_message, True, (0, 0, 0))
+        score_text = self.font.render(score_message, True, (0, 0, 0))
+
+        # Center the text on the screen
+        end_rect = end_text.get_rect(center=(400, 200))
+        score_rect = score_text.get_rect(center=(400, 300))
+
+        # Draw the text on the screen
+        self.look.screen.blit(end_text, end_rect)
+        self.look.screen.blit(score_text, score_rect)
+
+        # Update the display
+        pygame.display.flip()
+
+        # Keep the end screen visible until the user closes the game
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    waiting = False

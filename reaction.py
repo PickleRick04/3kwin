@@ -7,8 +7,8 @@ class Reaction:
     def __init__(self, look):
         self.player_one_score = 0
         self.player_two_score = 0
-        self.player_one_lifes = 1
-        self.player_two_lifes = 1
+        self.player_one_lifes = 3
+        self.player_two_lifes = 3
         self.look = look  # Pass the Look instance to be able to change the word
 
     def handle_event(self, event):
