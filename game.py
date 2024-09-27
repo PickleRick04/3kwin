@@ -40,7 +40,7 @@ class Game:
                 self.running = False  # Stop the game loop
 
             # Let Look handle the rendering of the game state
-            self.look.draw(player_one_score, player_two_score)
+            self.look.draw(player_one_score, player_two_score, player_one_lifes, player_two_lifes)
 
         # Show the end screen after the game loop ends
         self.show_end_screen(player_one_score, player_two_score)
