@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import K_a, K_l
 
 SCREEN_WIDTH = 800
 

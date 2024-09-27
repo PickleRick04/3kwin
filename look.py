@@ -75,10 +75,10 @@ class Look:
         bottom_left_text = f"Lifes: {player_one_lifes}"
         bottom_right_text = f"Lifes: {player_two_lifes}"
 
-        top_left_surface = self.corner_font.render(top_left_text, True, BLACK)
-        top_right_surface = self.corner_font.render(top_right_text, True, BLACK)
-        bottom_left_surface = self.corner_font.render(bottom_left_text, True, BLACK)
-        bottom_right_surface = self.corner_font.render(bottom_right_text, True, BLACK)
+        top_left_surface = self.corner_font.render(top_left_text, True, WHITE)
+        top_right_surface = self.corner_font.render(top_right_text, True, WHITE)
+        bottom_left_surface = self.corner_font.render(bottom_left_text, True, WHITE)
+        bottom_right_surface = self.corner_font.render(bottom_right_text, True, WHITE)
 
         self.screen.blit(top_left_surface, (10, 10))
         self.screen.blit(top_right_surface, (SCREEN_WIDTH - top_right_surface.get_width() - 10, 10))
