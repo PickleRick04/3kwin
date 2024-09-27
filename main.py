@@ -24,9 +24,9 @@ font = pygame.font.SysFont(None, 48)  # For the word in the block
 corner_font = pygame.font.SysFont(None, 36)  # For the text in the corners
 
 # Select a random word from fruits or vegetables list
-fruits = ["apple", "banana", "orange", "grape", "strawberry"]
-vegetables = ["carrot", "broccoli", "spinach", "potato", "tomato"]
-word = random.choice(fruits + vegetables)
+facts = ["apple", "banana", "orange", "grape", "strawberry"]
+nonFacts = ["carrot", "broccoli", "spinach", "potato", "tomato"]
+word = random.choice(facts + nonFacts)
 
 # Text for the corners
 top_left_text = "Player one: " + str(PLAYER_ONE)
