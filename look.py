@@ -22,6 +22,10 @@ class Look:
         self.word = ""
         self.word_list_name = ""
 
+        # Load background image
+        self.background_image = pygame.image.load('Background.jpg').convert()
+        self.background_image = pygame.transform.scale(self.background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
         # Word lists
         self.facts = ["apple", "banana", "orange", "grape", "strawberry"]
         self.non_facts = ["carrot", "broccoli", "spinach", "potato", "tomato"]
@@ -30,7 +34,7 @@ class Look:
         self.select_new_word()
 
     def select_new_word(self):
-        """Select a xnew random word and determine whether it's from the facts or nonFacts list."""
+        """Select a new random word and determine whether it's from the facts or nonFacts list."""
         combined_list = self.facts + self.non_facts
         self.word = random.choice(combined_list)
 
@@ -44,7 +48,8 @@ class Look:
 
     def draw(self, player_one_score, player_two_score, player_one_lifes, player_two_lifes):
         """Draw the block with the word, list name, and player scores."""
-        self.screen.fill(WHITE)
+        # Draw the background image
+        self.screen.blit(self.background_image, (0, 0))
 
         # Create the block rectangle
         block_rect = pygame.Rect(
@@ -65,10 +70,10 @@ class Look:
         self.screen.blit(text, text_rect)
 
         # Render player scores in the corners
-        top_left_text = f"Player one points: {player_one_score}"
-        top_right_text = f"Player two points: {player_two_score}"
-        bottom_left_text = f"Player one lifes: {player_one_lifes}"
-        bottom_right_text = f"Player two lifes: {player_two_lifes}"
+        top_left_text = f"Points: {player_one_score}"
+        top_right_text = f"Points: {player_two_score}"
+        bottom_left_text = f"Lifes: {player_one_lifes}"
+        bottom_right_text = f"Lifes: {player_two_lifes}"
 
         top_left_surface = self.corner_font.render(top_left_text, True, BLACK)
         top_right_surface = self.corner_font.render(top_right_text, True, BLACK)
@@ -79,5 +84,6 @@ class Look:
         self.screen.blit(top_right_surface, (SCREEN_WIDTH - top_right_surface.get_width() - 10, 10))
         self.screen.blit(bottom_left_surface, (10, SCREEN_HEIGHT - bottom_left_surface.get_height() - 10))
         self.screen.blit(bottom_right_surface, (SCREEN_WIDTH - top_right_surface.get_width() - 10, SCREEN_HEIGHT - bottom_left_surface.get_height() - 10))
+
         # Update the display
-        pygame.display.flip() 
+        pygame.display.flip()
