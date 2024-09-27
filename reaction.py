@@ -25,6 +25,7 @@ class Reaction:
             else:
                 if self.look.word_list_name == "facts":  # Check against the correct string
                     self.player_two_score += 1
+                    
                 else:
                     self.player_two_lifes -= 1
 

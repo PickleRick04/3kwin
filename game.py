@@ -11,16 +11,24 @@ class Game:
         self.reaction = Reaction(self.look)  # Pass the Look instance to Reaction
         self.running = True
         self.font = pygame.font.SysFont(None, 72)  # Font for the end screen
+        self.last_word_update = pygame.time.get_ticks()  # Track the last word update time
 
     def run(self):
         """Main game loop that keeps the game running."""
         while self.running:
+            current_time = pygame.time.get_ticks()
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
 
                 # Let Reaction handle player input
                 self.reaction.handle_event(event)
+
+            # Check if 5 seconds have passed to update the word
+            if current_time - self.last_word_update > 5000:
+                self.look.select_new_word()
+                self.last_word_update = current_time  # Reset the word update timer
 
             # Get the updated scores and lives
             player_one_score, player_two_score = self.reaction.get_scores()
@@ -54,7 +62,6 @@ class Game:
             end_message = "It's a Tie!"
             
         score_message = f"{player_one_score} : {player_two_score}"
-
         end_text = self.font.render(end_message, True, (0, 0, 0))
         score_text = self.font.render(score_message, True, (0, 0, 0))
 

@@ -1,4 +1,3 @@
-# look.py
 import random
 
 import pygame
@@ -6,6 +5,7 @@ import pygame
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 BLOCK_WIDTH, BLOCK_HEIGHT = 500, 300
 WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 
 class Look:
@@ -55,7 +55,7 @@ class Look:
         # Draw the block (black rectangle)
         pygame.draw.rect(self.screen, BLACK, block_rect)
         pygame.draw.line(self.screen, BLACK, (400, 0), (400, 600))
-
+        
         # Render the word inside the block
         word_text = f"{self.word} ({self.word_list_name})"  # Show word and the list name
         text = self.font.render(word_text, True, WHITE)
