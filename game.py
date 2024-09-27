@@ -24,6 +24,9 @@ class Game:
 
             # Get the updated scores
             player_one_score, player_two_score = self.reaction.get_scores()
+            player_one_lifes, player_two_lifes = self.reaction.get_lifes()
+            if player_one_lifes == 0 or player_two_lifes == 0:
+                self.running = False
 
             # Let Look handle the rendering of the game state
             self.look.draw(player_one_score, player_two_score)
