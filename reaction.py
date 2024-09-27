@@ -35,6 +35,25 @@ class Reaction:
 
             # Select a new word after each click and identify the list
             self.look.select_new_word()
+            
+        elif event.type == pygame.KEYDOWN:
+            if event.key == K_a:
+                self.button = True
+            # Player one scores if correct word list
+                if self.look.word_list_name == "facts":
+                    self.player_one_score += 1
+                else:
+                    self.player_one_lifes -= 1
+            elif event.key == K_l:
+                self.button = True
+            # Player two scores if correct word list
+                if self.look.word_list_name == "facts":
+                    self.player_two_score += 1
+                else:
+                    self.player_two_lifes -= 1
+
+        # Select a new word after key press
+            self.look.select_new_word()
     def get_scores(self):
         """Returns the current player scores."""
         return self.player_one_score, self.player_two_score
