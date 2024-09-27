@@ -1,4 +1,3 @@
-# reaction.py
 import pygame
 
 SCREEN_WIDTH = 800
@@ -17,9 +16,11 @@ class Reaction:
 
             # Update the score based on click position
             if mouse_x < SCREEN_WIDTH // 2:
-                self.player_one_score += 1
+                if self.look.word_list_name == "facts":  # Check against the correct string
+                    self.player_one_score += 1
             else:
-                self.player_two_score += 1
+                if self.look.word_list_name == "facts":  # Check against the correct string
+                    self.player_two_score += 1
 
             # Select a new word after each click and identify the list
             self.look.select_new_word()

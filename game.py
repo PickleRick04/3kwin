@@ -29,4 +29,3 @@ class Game:
             self.look.draw(player_one_score, player_two_score)
 
         pygame.quit()
-#COMMENT

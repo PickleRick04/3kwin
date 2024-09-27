@@ -23,22 +23,22 @@ class Look:
         self.word_list_name = ""
 
         # Word lists
-        self.fruits = ["apple", "banana", "orange", "grape", "strawberry"]
-        self.vegetables = ["carrot", "broccoli", "spinach", "potato", "tomato"]
+        self.facts = ["apple", "banana", "orange", "grape", "strawberry"]
+        self.non_facts = ["carrot", "broccoli", "spinach", "potato", "tomato"]
 
         # Select an initial word
         self.select_new_word()
 
     def select_new_word(self):
-        """Select a new random word and determine whether it's from the fruits or vegetables list."""
-        combined_list = self.fruits + self.vegetables
+        """Select a new random word and determine whether it's from the facts or nonFacts list."""
+        combined_list = self.facts + self.non_facts
         self.word = random.choice(combined_list)
 
-        # Determine whether the word came from the fruits or vegetables list
-        if self.word in self.fruits:
-            self.word_list_name = "fruits"
+        # Determine whether the word came from the facts or nonFacts list
+        if self.word in self.facts:
+            self.word_list_name = "facts"
         else:
-            self.word_list_name = "vegetables"
+            self.word_list_name = "non_facts"
 
     def draw(self, player_one_score, player_two_score):
         """Draw the block with the word, list name, and player scores."""
