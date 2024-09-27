@@ -9,7 +9,7 @@ class Game:
     """Main game logic controller."""
     def __init__(self):
         self.look = Look()
-        self.reaction = Reaction()
+        self.reaction = Reaction(self.look)  # Pass the Look instance to Reaction
         self.running = True
 
     def run(self):

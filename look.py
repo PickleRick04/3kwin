@@ -18,13 +18,30 @@ class Look:
         self.font = pygame.font.SysFont(None, 48)
         self.corner_font = pygame.font.SysFont(None, 36)
 
-        # Word selection
-        fruits = ["apple", "banana", "orange", "grape", "strawberry"]
-        vegetables = ["carrot", "broccoli", "spinach", "potato", "tomato"]
-        self.word = random.choice(fruits + vegetables)
+        # Initialize word selection (can be updated dynamically)
+        self.word = ""
+        self.word_list_name = ""
+
+        # Word lists
+        self.fruits = ["apple", "banana", "orange", "grape", "strawberry"]
+        self.vegetables = ["carrot", "broccoli", "spinach", "potato", "tomato"]
+
+        # Select an initial word
+        self.select_new_word()
+
+    def select_new_word(self):
+        """Select a new random word and determine whether it's from the fruits or vegetables list."""
+        combined_list = self.fruits + self.vegetables
+        self.word = random.choice(combined_list)
+
+        # Determine whether the word came from the fruits or vegetables list
+        if self.word in self.fruits:
+            self.word_list_name = "fruits"
+        else:
+            self.word_list_name = "vegetables"
 
     def draw(self, player_one_score, player_two_score):
-        """Draw the block with the word and player scores."""
+        """Draw the block with the word, list name, and player scores."""
         self.screen.fill(WHITE)
 
         # Create the block rectangle
@@ -40,7 +57,8 @@ class Look:
         pygame.draw.line(self.screen, BLACK, (400, 0), (400, 600))
 
         # Render the word inside the block
-        text = self.font.render(self.word, True, WHITE)
+        word_text = f"{self.word} ({self.word_list_name})"  # Show word and the list name
+        text = self.font.render(word_text, True, WHITE)
         text_rect = text.get_rect(center=block_rect.center)
         self.screen.blit(text, text_rect)
 
@@ -55,4 +73,4 @@ class Look:
         self.screen.blit(top_right_surface, (SCREEN_WIDTH - top_right_surface.get_width() - 10, 10))
 
         # Update the display
-        pygame.display.flip()
+        pygame.display.flip() 
