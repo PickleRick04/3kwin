@@ -12,7 +12,7 @@ class Look:
     """Class to handle the rendering and visual representation of the game."""
     def __init__(self):
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("Display Word Inside Block")
+        pygame.display.set_caption("Quiz game")
 
         # Fonts for rendering
         self.font = pygame.font.SysFont(None, 48)
@@ -30,14 +30,16 @@ class Look:
         self.select_new_word()
 
     def select_new_word(self):
-        """Select a new random word and determine whether it's from the facts or nonFacts list."""
+        """Select a xnew random word and determine whether it's from the facts or nonFacts list."""
         combined_list = self.facts + self.non_facts
         self.word = random.choice(combined_list)
 
         # Determine whether the word came from the facts or nonFacts list
         if self.word in self.facts:
+            self.facts.remove(self.word)
             self.word_list_name = "facts"
         else:
+            self.non_facts.remove(self.word)
             self.word_list_name = "non_facts"
 
     def draw(self, player_one_score, player_two_score):

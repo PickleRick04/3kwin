@@ -17,7 +17,6 @@ class Game:
         """Main game loop that keeps the game running."""
         while self.running:
             current_time = pygame.time.get_ticks()
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
@@ -25,6 +24,8 @@ class Game:
                 # Let Reaction handle player input
                 self.reaction.handle_event(event)
 
+            if self.reaction.button:
+                self.last_word_update = current_time
             # Check if 5 seconds have passed to update the word
             if current_time - self.last_word_update > 5000:
                 self.look.select_new_word()
