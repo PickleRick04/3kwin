@@ -1,4 +1,5 @@
 import random
+import textwrap
 
 import pygame
 
@@ -27,8 +28,127 @@ class Look:
         self.background_image = pygame.transform.scale(self.background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
         # Word lists
-        self.facts = ["apple", "banana", "orange", "grape", "strawberry"]
-        self.non_facts = ["carrot", "broccoli", "spinach", "potato", "tomato"]
+        self.facts = [
+                # Easy Tier
+            "The Earth is round.",
+            "There are seven days in a week.",
+            "Plants need sunlight to grow.",
+            "The opposite of hot is cold.",
+            "Fish live in water.",
+            "Birds have wings.",
+            "The heart pumps blood through the body.",
+            "Leaves on trees are generally green.",
+            "Snow is cold.",
+            "Fire is hot.",
+            "A year has twelve months.",
+            "An orange is a type of fruit.",
+            "Dogs are mammals.",
+            "Water freezes at 0 degrees Celsius.",
+            "The sky appears blue during a sunny day.",
+            "Honey is made by bees.",
+            "An apple is a fruit.",
+            "Cats have whiskers.",
+            "Humans need oxygen to breathe.",
+            "A bicycle has two wheels.",
+            "Water boils at 100 degrees Celsius at sea level.",
+            "The Earth revolves around the Sun.",
+            "Humans have 46 chromosomes.",
+            "The chemical formula for water is H2O.",
+            "Sharks are a type of fish.",
+            "The capital of France is Paris.",
+            "Octopuses have three hearts.",
+            "Photosynthesis is the process plants use to make food from sunlight.",
+            "Diamond is the hardest natural substance on Earth.",
+            "A group of crows is called a murder.",
+            "The largest ocean on Earth is the Pacific Ocean.",
+            "Bats are mammals.",
+            "The human body has 206 bones.",
+            "Venus is the hottest planet in the solar system.",
+            "The speed of light in a vacuum is approximately 299,792 kilometers per second.",
+            "The Great Wall of China is visible from space.",
+            "An octagon has eight sides.",
+            "Albert Einstein developed the theory of relativity.",
+            "The Pacific Ring of Fire is famous for its volcanic and seismic activity.",
+            "Antarctica is the driest continent on Earth.",
+            # Medium Tier
+            "Jupiter has the most moons of any planet in the solar system.",
+            "The inventor of the light bulb, Thomas Edison, held over 1,000 patents.",
+            "Coffee is derived from berries.",
+            "An adult human skeleton typically accounts for about 14% of the body's total weight.",
+            "Woolly mammoths still walked the earth when the Great Pyramid was being constructed.",
+            "All squares are rectangles, but not all rectangles are squares.",
+            "Helium is the second lightest and second most abundant element in the observable universe.",
+            "The deadliest war in history, in terms of the number of people killed, was World War II.",
+            "Honey never spoils.",
+            "The largest desert in the world is Antarctica.",
+            # More medium facts...
+            # Difficult Tier
+            "The sum of all natural numbers (1 + 2 + 3 + ...) is -1/12 in certain mathematical contexts.",
+            "Cleopatra lived closer in time to the moon landing than to the construction of the Great Pyramid of Giza.",
+            "Venus rotates on its axis in a direction opposite to that of most planets in the solar system.",
+            "The strongest muscle in the human body based on its weight is the masseter (jaw muscle).",
+            "The Eiffel Tower can be 15 cm taller during the summer when the metal expands due to heat.",
+            "Bananas are berries, but strawberries are not.",
+            # More difficult facts...
+        ]
+
+        self.non_facts = [
+                # Easy Tier
+            "Cars can fly.",
+            "Fish can live out of water.",
+            "Chocolate milk comes from black cows.",
+            "All birds can talk.",
+            "Humans can breathe underwater without help.",
+            "Cats are a type of bird.",
+            "Deserts are always cold.",
+            "A minute has 100 seconds.",
+            "Trees can walk.",
+            "The sun rises in the west.",
+            "All dogs can swim.",
+            "Apples are vegetables.",
+            "Ice is heavier than water.",
+            "Penguins live in the Sahara Desert.",
+            "The moon is made of cheese.",
+            "All plants are blue.",
+            "Rabbits can fly.",
+            "A year has 10 months.",
+            "Humans can see ultraviolet light naturally.",
+            "The Earth is flat.",
+            "Cats have nine lives.",
+            "Humans can breathe in space without assistance.",
+            "The sun revolves around the Earth.",
+            "Chocolate milk comes from brown cows.",
+            "Penguins can fly.",
+            "The capital of Spain is Barcelona.",
+            "All insects have six legs.",
+            "Goldfish have a three-second memory.",
+            "Dogs can only see in black and white.",
+            "The largest country in the world by area is the United States.",
+            # Medium Tier
+            "The human brain is fully mature by the time a person reaches 18 years of age.",
+            "Lightning never strikes the same place twice.",
+            "Humans can see millions of colors.",
+            "The Great Pyramid of Giza was built by slaves.",
+            "Ostriches bury their heads in the sand when they are scared.",
+            "More than 50% of the human body's cells are human cells.",
+            "The Titanic was deemed 'unsinkable' before setting sail.",
+            "You can see the Great Wall of China from the moon.",
+            "A penny dropped from the Empire State Building can kill someone.",
+            "The full moon affects human behavior.",
+            # More medium facts...
+            # Difficult Tier
+            "Vitamin C prevents common colds.",
+            "Shaving hair makes it grow back thicker and darker.",
+            "Humans use only 10% of their brains.",
+            "Drinking alcohol kills brain cells.",
+            "Sushi means 'raw fish' in Japanese.",
+            "The Forbidden City is in Shanghai.",
+            "The Pythagorean theorem applies to all types of triangles.",
+            "You can catch a cold from cold weather.",
+            "Deoxygenated blood is blue.",
+            "Eating at night makes you gain weight faster than eating the same food during the day.",
+            # More difficult facts...
+        ]
 
         # Select an initial word
         self.select_new_word()
@@ -61,13 +181,45 @@ class Look:
 
         # Draw the block (black rectangle)
         pygame.draw.rect(self.screen, BLACK, block_rect)
-        pygame.draw.line(self.screen, BLACK, (400, 0), (400, 600))
-        
+        pygame.draw.line(self.screen, BLACK, (400, 0), (400, 600), width=2)
+
         # Render the word inside the block
-        word_text = f"{self.word} ({self.word_list_name})"  # Show word and the list name
-        text = self.font.render(word_text, True, WHITE)
-        text_rect = text.get_rect(center=block_rect.center)
-        self.screen.blit(text, text_rect)
+        word_text = f"{self.word}"  # Show word and the list name
+
+        # Split the text into words
+        words = word_text.split(' ')
+        lines = []
+        current_line = []
+        current_width = 0
+
+        # Calculate width for each word and wrap if necessary
+        for word in words:
+            word_surface = self.font.render(word + ' ', True, WHITE)  # Add a space after each word
+            word_width, word_height = word_surface.get_size()
+
+            if current_width + word_width <= BLOCK_WIDTH:
+                current_line.append(word)
+                current_width += word_width
+            else:
+                lines.append(' '.join(current_line))
+                current_line = [word]
+                current_width = word_width
+
+        # Append the last line
+        if current_line:
+            lines.append(' '.join(current_line))
+
+        # Render each line of the wrapped text and ensure it fits within the block
+        line_height = self.font.size('Tg')[1]  # Approximate height of one line
+        total_text_height = len(lines) * line_height
+
+        # Start drawing text from the top of the block, centered vertically
+        start_y = block_rect.centery - total_text_height // 2
+
+        for i, line in enumerate(lines):
+            text_surface = self.font.render(line, True, WHITE)
+            text_rect = text_surface.get_rect(center=(block_rect.centerx, start_y + i * line_height))
+            self.screen.blit(text_surface, text_rect)
 
         # Render player scores in the corners
         top_left_text = f"Points: {player_one_score}"

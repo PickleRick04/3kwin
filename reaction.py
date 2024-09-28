@@ -41,14 +41,14 @@ class Reaction:
         if event.key == K_a:
             self.button = True
             self.update_player_score(is_left=True)
+            self.look.select_new_word()
         elif event.key == K_l:
             self.button = True
             self.update_player_score(is_left=False)
+            self.look.select_new_word()
         elif event.key == K_v:
             self.word_updates_paused = not self.word_updates_paused
         # Only change the word if word updates are not paused
-        if not self.word_updates_paused:
-            self.look.select_new_word()
         
         # Toggle the pause state when the 'V' key is pressed
         
