@@ -19,21 +19,18 @@ class Reaction:
         self.button = False
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-            self.handle_mouse_click()
+            self.button = True
+            mouse_x, _ = pygame.mouse.get_pos()
+            if mouse_x < SCREEN_WIDTH // 2:
+                self.update_player_score(is_left=True)
+            else:
+                self.update_player_score(is_left=False)
+            
+            if not self.word_updates_paused:
+                self.look.select_new_word()
         elif event.type == pygame.KEYDOWN:
             self.handle_key_press(event)
 
-    def handle_mouse_click(self):
-        """Handles mouse click event logic."""
-        self.button = True
-        mouse_x, _ = pygame.mouse.get_pos()
-        if mouse_x < SCREEN_WIDTH // 2:
-            self.update_player_score(is_left=True)
-        else:
-            self.update_player_score(is_left=False)
-        
-        if not self.word_updates_paused:
-            self.look.select_new_word()
 
     def handle_key_press(self, event):
         """Handles key press event logic."""
