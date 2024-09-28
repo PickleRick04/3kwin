@@ -11,8 +11,8 @@ class Reaction:
         self.player_two_score = 0
         self.player_one_lifes = 3
         self.player_two_lifes = 3
-        self.look = look  # Pass the Look instance to be able to change the word
-        self.word_updates_paused = False  # New flag to track whether word updates are paused
+        self.look = look 
+        self.word_updates_paused = False
 
     def handle_event(self, event):
         """Handles mouse click and key press events to update player scores."""
@@ -32,7 +32,6 @@ class Reaction:
         else:
             self.update_player_score(is_left=False)
         
-        # Only change the word if word updates are not paused
         if not self.word_updates_paused:
             self.look.select_new_word()
 
@@ -48,9 +47,6 @@ class Reaction:
             self.look.select_new_word()
         elif event.key == K_v:
             self.word_updates_paused = not self.word_updates_paused
-        # Only change the word if word updates are not paused
-        
-        # Toggle the pause state when the 'V' key is pressed
         
 
     def update_player_score(self, is_left):
