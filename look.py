@@ -2,9 +2,10 @@ import random
 import textwrap
 
 import pygame
+from PIL import Image
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
-BLOCK_WIDTH, BLOCK_HEIGHT = 500, 300
+BLOCK_WIDTH, BLOCK_HEIGHT = 300, 300
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
@@ -23,13 +24,17 @@ class Look:
         self.word = ""
         self.word_list_name = ""
 
-        # Load background image
-        self.background_image = pygame.image.load('Background.jpg').convert()
-        self.background_image = pygame.transform.scale(self.background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+        # Load GIF and extract frames, scaled to a larger size (e.g., 2x the screen size)
+        self.gif_frames, self.gif_offset = self.load_gif_frames('cartoon.gif', scale_factor=1.2)
+
+        # To track the current frame in the animation
+        self.current_frame = 0
+        self.frame_delay = 15  # Adjust this to slow down the GIF animation
+        self.frame_count = 0
 
         # Word lists
         self.facts = [
-                # Easy Tier
+            # Easy Tier
             "The Earth is round.",
             "There are seven days in a week.",
             "Plants need sunlight to grow.",
@@ -91,9 +96,8 @@ class Look:
             "Bananas are berries, but strawberries are not.",
             # More difficult facts...
         ]
-
         self.non_facts = [
-                # Easy Tier
+             # Easy Tier
             "Cars can fly.",
             "Fish can live out of water.",
             "Chocolate milk comes from black cows.",
@@ -153,6 +157,41 @@ class Look:
         # Select an initial word
         self.select_new_word()
 
+    def load_gif_frames(self, gif_path, scale_factor=2):
+        """Load GIF frames using Pillow, scale them to a larger size, and center."""
+        gif = Image.open(gif_path)
+        frames = []
+        new_width = int(SCREEN_WIDTH * scale_factor)
+        new_height = int(SCREEN_HEIGHT * scale_factor)
+
+        # Calculate offsets to center the GIF
+        offset_x = (SCREEN_WIDTH - new_width) // 2
+        offset_y = (SCREEN_HEIGHT - new_height) // 2
+
+        try:
+            while True:
+                frame = gif.copy()
+                frame = frame.convert("RGBA")  # Convert to a Pygame-compatible format
+
+                # Resize frame to a larger dimension using the scale factor
+                frame = frame.resize((new_width, new_height), Image.ANTIALIAS)
+
+                # Convert to Pygame surface
+                mode = frame.mode
+                size = frame.size
+                data = frame.tobytes()
+
+                pygame_image = pygame.image.fromstring(data, size, mode)
+                frames.append(pygame_image)
+
+                # Move to the next frame
+                gif.seek(gif.tell() + 1)
+        except EOFError:
+            pass  # End of GIF frames
+        
+        # Return the frames and the offset needed to center the larger image
+        return frames, (offset_x, offset_y)
+
     def select_new_word(self):
         """Select a new random word and determine whether it's from the facts or nonFacts list."""
         combined_list = self.facts + self.non_facts
@@ -166,10 +205,22 @@ class Look:
             self.non_facts.remove(self.word)
             self.word_list_name = "non_facts"
 
+    def update_frame(self):
+        """Update the GIF frame."""
+        if self.frame_count == self.frame_delay:
+            self.current_frame = (self.current_frame + 1) % len(self.gif_frames)
+            self.frame_count = 0
+        else:
+            self.frame_count += 1
+
     def draw(self, player_one_score, player_two_score, player_one_lifes, player_two_lifes):
         """Draw the block with the word, list name, and player scores."""
-        # Draw the background image
-        self.screen.blit(self.background_image, (0, 0))
+        # Update the background frame
+        self.update_frame()
+
+        # Draw the current frame of the background GIF, scaled and centered
+        offset_x, offset_y = self.gif_offset
+        self.screen.blit(self.gif_frames[self.current_frame], (offset_x, offset_y))
 
         # Create the block rectangle
         block_rect = pygame.Rect(
@@ -186,7 +237,7 @@ class Look:
         # Render the word inside the block
         word_text = f"{self.word}"  # Show word and the list name
 
-        # Split the text into words
+        # Split the text into words and wrap text
         words = word_text.split(' ')
         lines = []
         current_line = []
