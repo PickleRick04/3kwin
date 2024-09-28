@@ -23,11 +23,13 @@ class Game:
 
                 # Let Reaction handle player input
                 self.reaction.handle_event(event)
-
+                
             if self.reaction.button:
                 self.last_word_update = current_time
+
             # Check if 5 seconds have passed to update the word
-            if current_time - self.last_word_update > 5000:
+            # Only update the word if word updates are not paused
+            if current_time - self.last_word_update > 5000 and not self.reaction.word_updates_paused:
                 self.look.select_new_word()
                 self.last_word_update = current_time  # Reset the word update timer
 
